@@ -24,7 +24,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
             session.activateSession()
         }
         
-        print(session.outstandingUserInfoTransfers)
+        let transfers = session.outstandingUserInfoTransfers
+        if transfers.count > 0 {
+            let transfer = transfers.first!
+            transfer.cancel()
+        }
         
         return true
     }
@@ -53,11 +57,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
     func session(session: WCSession, didReceiveUserInfo userInfo: [String : AnyObject]) {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            print([userInfo] as AnyObject)
             if let items = NSUserDefaults.standardUserDefaults().objectForKey("items") as? [NSDictionary] {
                 var newItems = items
                 newItems.append(userInfo)
-                NSUserDefaults.standardUserDefaults().setObject(newItems as? AnyObject, forKey: "items")
+                NSUserDefaults.standardUserDefaults().setObject(newItems as AnyObject, forKey: "items")
             } else {
                 NSUserDefaults.standardUserDefaults().setObject([userInfo] as AnyObject, forKey: "items")
             }

@@ -30,7 +30,6 @@ class ExtensionDelegate: NSObject, WKExtensionDelegate, WCSessionDelegate {
     
     func session(session: WCSession, didReceiveUserInfo userInfo: [String : AnyObject]) {
         dispatch_async(dispatch_get_main_queue()) { () -> Void in
-            print([userInfo] as AnyObject)
             if let items = NSUserDefaults.standardUserDefaults().objectForKey("items") as? [NSDictionary] {
                 var newItems = items
                 newItems.append(userInfo)
