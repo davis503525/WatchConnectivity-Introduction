@@ -9,7 +9,6 @@
 import WatchKit
 import Foundation
 
-
 class InterfaceController: WKInterfaceController {
     
     @IBOutlet var table: WKInterfaceTable!
@@ -25,6 +24,19 @@ class InterfaceController: WKInterfaceController {
         // This method is called when watch view controller is about to be visible to user
         super.willActivate()
         self.items.removeAll()
+        
+        if let newItems = NSUserDefaults.standardUserDefaults().objectForKey("items") as? [[String: AnyObject?]] {
+            self.items = newItems
+            self.table.setNumberOfRows(self.items.count, withRowType: "BasicRow")
+            
+            for i in 0..<self.items.count {
+                if let row = self.table.rowControllerAtIndex(items.count-1) as? TableRow {
+                    let date = self.items[i]["date"] as! NSDate
+                    row.mainTitle.setText("\(date)")
+                    row.subtitle.setText(self.items[i]["day"] as? String)
+                }
+            }
+        }
     }
 
     override func didDeactivate() {

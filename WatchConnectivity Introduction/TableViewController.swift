@@ -22,6 +22,11 @@ class TableViewController: UITableViewController {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
         
         self.items.removeAll()
+        
+        if let newItems = NSUserDefaults.standardUserDefaults().objectForKey("items") as? [[String: AnyObject?]] {
+            self.items = newItems
+        }
+        
         self.tableView.reloadData()
         self.setNeedsStatusBarAppearanceUpdate()
     }
