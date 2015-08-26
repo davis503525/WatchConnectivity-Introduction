@@ -49,6 +49,8 @@ class TableViewController: UITableViewController {
         let item = ["date": date, "day": dateFormatter.stringFromDate(date)]
         self.items.append(item)
         self.tableView.reloadData()
+        
+        WCSession.defaultSession().transferUserInfo(item)
     }
 
     // MARK: - Table view data source

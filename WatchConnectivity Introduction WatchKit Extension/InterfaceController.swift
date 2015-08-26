@@ -62,5 +62,7 @@ class InterfaceController: WKInterfaceController {
             row.mainTitle.setText("\(date)")
             row.subtitle.setText(item["day"] as? String)
         }
+        
+        WCSession.defaultSession().transferUserInfo(item)
     }
 }

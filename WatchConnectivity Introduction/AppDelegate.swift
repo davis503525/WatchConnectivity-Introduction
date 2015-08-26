@@ -7,15 +7,25 @@
 //
 
 import UIKit
+import WatchConnectivity
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, WCSessionDelegate {
 
     var window: UIWindow?
-
+    var session: WCSession!
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        session = WCSession.defaultSession()
+        session.delegate = self
+
+        if WCSession.isSupported() {
+            session.activateSession()
+        }
+        
+        print(session.transferUserInfo(<#T##userInfo: [String : AnyObject]##[String : AnyObject]#>))
+        
         return true
     }
 
@@ -41,6 +51,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    func session(session: WCSession, didReceiveUserInfo userInfo: [String : AnyObject]) {
+        dispatch_async(dispatch_get_main_queue()) { () -> Void in
+            if let items = NSUserDefaults.standardUserDefaults().objectForKey("items") as? [[String: AnyObject?]] {
+                var newItems = items
+                newItems.append(userInfo)
+                NSUserDefaults.standardUserDefaults().setObject(newItems as? AnyObject, forKey: "items")
+            }
+        }
+    }
 }
 
