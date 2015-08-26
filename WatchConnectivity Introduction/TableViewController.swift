@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import WatchConnectivity
 
 class TableViewController: UITableViewController {
     
