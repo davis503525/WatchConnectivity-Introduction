@@ -11,7 +11,7 @@ import WatchConnectivity
 
 class TableViewController: UITableViewController {
     
-    var items: [[String: AnyObject?]] = [[:]]
+    var items: [NSDictionary] = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,9 +24,12 @@ class TableViewController: UITableViewController {
         
         self.items.removeAll()
         
-        if let newItems = NSUserDefaults.standardUserDefaults().objectForKey("items") as? [[String: AnyObject?]] {
+        if let newItems = NSUserDefaults.standardUserDefaults().objectForKey("items") as? [NSDictionary] {
+            print("True")
             self.items = newItems
         }
+        
+        print(NSUserDefaults.standardUserDefaults().objectForKey("items"))
         
         self.tableView.reloadData()
         self.setNeedsStatusBarAppearanceUpdate()

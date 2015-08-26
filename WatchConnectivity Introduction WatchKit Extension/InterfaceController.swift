@@ -14,7 +14,7 @@ class InterfaceController: WKInterfaceController {
     
     @IBOutlet var table: WKInterfaceTable!
     let dateFormatter = NSDateFormatter()
-    var items: [[String: AnyObject?]] = [[:]]
+    var items: [NSDictionary] = []
     
     override func awakeWithContext(context: AnyObject?) {
         super.awakeWithContext(context)
@@ -26,12 +26,13 @@ class InterfaceController: WKInterfaceController {
         super.willActivate()
         self.items.removeAll()
         
-        if let newItems = NSUserDefaults.standardUserDefaults().objectForKey("items") as? [[String: AnyObject?]] {
+        if let newItems = NSUserDefaults.standardUserDefaults().objectForKey("items") as? [NSDictionary] {
             self.items = newItems
             self.table.setNumberOfRows(self.items.count, withRowType: "BasicRow")
             
             for i in 0..<self.items.count {
                 if let row = self.table.rowControllerAtIndex(items.count-1) as? TableRow {
+                    print(self.items[i])
                     let date = self.items[i]["date"] as! NSDate
                     row.mainTitle.setText("\(date)")
                     row.subtitle.setText(self.items[i]["day"] as? String)
